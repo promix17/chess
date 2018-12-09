@@ -69,6 +69,8 @@ type TagPair struct {
 
 // A Game represents a single chess game.
 type Game struct {
+	Half                 bool
+	StartMove            int
 	notation             Notation
 	tagPairs             []*TagPair
 	moves                []*Move
@@ -366,6 +368,10 @@ func (g *Game) updatePosition() {
 		g.outcome = Draw
 		g.method = InsufficientMaterial
 	}
+}
+
+func (g *Game) SetNotation(n Notation) () {
+	g.notation = n
 }
 
 func (g *Game) copy(game *Game) {

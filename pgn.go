@@ -73,15 +73,16 @@ func decodePGN(pgn string) (*Game, error) {
 
 func encodePGN(g *Game) string {
 	s := ""
-	for _, tag := range g.tagPairs {
-		s += fmt.Sprintf("[%s \"%s\"]\n", tag.Key, tag.Value)
-	}
-	s += "\n"
 	for i, move := range g.moves {
 		pos := g.positions[i]
 		txt := g.notation.Encode(pos, move)
+		if(g.Half) {
+			i = i + 1
+		}
 		if i%2 == 0 {
-			s += fmt.Sprintf("%d.%s", (i/2)+1, txt)
+			s += fmt.Sprintf("%d.%s", g.StartMove + (i/2)+1, txt)
+		} else if(g.Half && i==1) {
+			s += fmt.Sprintf("%d... %s ", g.StartMove + (i/2)+1, txt)
 		} else {
 			s += fmt.Sprintf(" %s ", txt)
 		}
